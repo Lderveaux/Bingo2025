@@ -86,7 +86,7 @@
       function updateRooster(nummers) {
         const vakjes = document.querySelectorAll(".vakje");
         vakjes.forEach((vakje) => {
-          const nummer = vakje.textContent;
+          const nummer = vakje.dataset.id;
           if (nummers[nummer]) {
             vakje.classList.add("getrokken");
           } else {
