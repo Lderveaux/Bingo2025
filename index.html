@@ -72,8 +72,9 @@
         vakje.className = "cell vakje";
         vakje.dataset.id = i;
         const nummer = vakje.dataset.id;
-        vakje.id = `cell-${i}`;
-        grid.appendChild(vakje);
+vakje.id = `cell-${i}`;
+vakje.textContent = nummer; // ← Voeg het nummer toe als tekst
+grid.appendChild(vakje);
       }
 
       // Firebase listener
