@@ -123,6 +123,14 @@
     }
     db.ref("nummers").set(updates);
   }
+  const cellen = document.querySelectorAll(".bingocel");
+
+  cellen.forEach(cel => {
+    cel.addEventListener("click", function () {
+      cel.classList.toggle("geselecteerd");
+    });
+  });
+</script>
 </script>
 </body>
 </html>
