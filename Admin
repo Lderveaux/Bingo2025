@@ -57,14 +57,15 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script>
     // 🔧 Vervang dit met jouw Firebase-configuratie
-    const firebaseConfig = {
-      apiKey: "JOUW_API_KEY",
-      authDomain: "JOUW_PROJECT.firebaseapp.com",
-      databaseURL: "https://JOUW_PROJECT.firebaseio.com",
-      projectId: "JOUW_PROJECT",
-      storageBucket: "JOUW_PROJECT.appspot.com",
-      messagingSenderId: "JOUW_SENDER_ID",
-      appId: "JOUW_APP_ID"
+   const firebaseConfig = {
+  apiKey: "AIzaSyAX3RaXLAOb3i9uCS8wqbJNvhzpTlASaWI",
+  authDomain: "bingolive-2b326.firebaseapp.com",
+  databaseURL: "https://bingolive-2b326-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "bingolive-2b326",
+  storageBucket: "bingolive-2b326.firebasestorage.app",
+  messagingSenderId: "269555410215",
+  appId: "1:269555410215:web:c7fba454ebd510f1c2b502",
+  measurementId: "G-GFSYKPWQ7M"
     };
 
     firebase.initializeApp(firebaseConfig);
