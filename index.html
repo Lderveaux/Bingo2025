@@ -120,9 +120,25 @@
         grid.appendChild(cell);
       }
     }
+const db = firebase.database();
+const nummersRef = db.ref("nummers");
 
-    fetchData();
-    setInterval(fetchData, 5000);
+nummersRef.on("value", (snapshot) => {
+  const nummers = snapshot.val() || {};
+  updateRooster(nummers);
+});
+
+function updateRooster(nummers) {
+  const vakjes = document.querySelectorAll(".vakje");
+  vakjes.forEach((vakje) => {
+    const nummer = vakje.textContent;
+    if (nummers[nummer]) {
+      vakje.classList.add("getrokken");
+    } else {
+      vakje.classList.remove("getrokken");
+    }
+  });
+}
   </script>
 </body>
 </html>
