@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <title>Bingo Spelleider</title>
   <style>
+    .geselecteerd {
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  border: 2px solid #333;
+}
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -57,42 +63,54 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script>
     // 🔧 Vervang dit met jouw Firebase-configuratie
-   const firebaseConfig = {
-  apiKey: "AIzaSyAX3RaXLAOb3i9uCS8wqbJNvhzpTlASaWI",
-  authDomain: "bingolive-2b326.firebaseapp.com",
-  databaseURL: "https://bingolive-2b326-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "bingolive-2b326",
-  storageBucket: "bingolive-2b326.appspot.com",
-  messagingSenderId: "269555410215",
-  appId: "1:269555410215:web:c7fba454ebd510f1c2b502",
-  measurementId: "G-GFSYKPWQ7M"
-    };
+   <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAX3RaXLAOb3i9uCS8wqbJNvhzpTlASaWI",
+    authDomain: "bingolive-2b326.firebaseapp.com",
+    databaseURL: "https://bingolive-2b326-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "bingolive-2b326",
+    storageBucket: "bingolive-2b326.appspot.com",
+    messagingSenderId: "269555410215",
+    appId: "1:269555410215:web:c7fba454ebd510f1c2b502",
+    measurementId: "G-GFSYKPWQ7M"
+  };
 
-    firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+  const adminGrid = document.getElementById("adminGrid");
 
-    const adminGrid = document.getElementById("adminGrid");
-    const db = firebase.database();
+  for (let i = 1; i <= 99; i++) {
+    const knop = document.createElement("button");
+    knop.textContent = i;
+    knop.className = "admin-knop";
+    knop.addEventListener("click", () => {
+      db.ref("nummers/" + i).set(true);
+    });
+    adminGrid.appendChild(knop);
+  }
 
-    // Bouw de knoppen voor nummers 1 t.e.m. 99
+  // 🔁 Live update van geselecteerde nummers
+  db.ref("nummers").on("value", (snapshot) => {
+    const nummers = snapshot.val() || {};
     for (let i = 1; i <= 99; i++) {
-      const knop = document.createElement("button");
-      knop.textContent = i;
-      knop.className = "admin-knop";
-      knop.addEventListener("click", () => {
-        db.ref("nummers/" + i).set(true);
-      });
-      adminGrid.appendChild(knop);
-    }
-
-    // Resetfunctie: zet alle nummers terug op false
-    function resetBingo() {
-      const updates = {};
-      for (let i = 1; i <= 99; i++) {
-        updates[i] = false;
+      const knop = document.querySelector(`.admin-knop:nth-child(${i})`);
+      if (nummers[i]) {
+        knop.classList.add("geselecteerd");
+      } else {
+        knop.classList.remove("geselecteerd");
       }
-      db.ref("nummers").set(updates);
     }
-  </script>
+  });
+
+  // 🔄 Resetfunctie
+  function resetBingo() {
+    const updates = {};
+    for (let i = 1; i <= 99; i++) {
+      updates[i] = false;
+    }
+    db.ref("nummers").set(updates);
+  }
+</script>
 </body>
 </html>
    
