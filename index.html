@@ -120,6 +120,16 @@
         grid.appendChild(cell);
       }
     }
+const grid = document.getElementById('bingoGrid');
+
+// Bouw het rooster met 99 vakjes
+for (let i = 1; i <= 99; i++) {
+  const vakje = document.createElement('div');
+  vakje.className = 'cell vakje';
+  vakje.textContent = i;
+  vakje.id = `cell-${i}`;
+  grid.appendChild(vakje);
+}
 const db = firebase.database();
 const nummersRef = db.ref("nummers");
 
