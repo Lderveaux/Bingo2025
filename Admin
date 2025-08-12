@@ -71,5 +71,28 @@
     firebase.initializeApp(firebaseConfig);
 
     const adminGrid = document.getElementById("adminGrid");
+    const db = firebase.database();
 
+    // Bouw de knoppen voor nummers 1 t.e.m. 99
+    for (let i = 1; i <= 99; i++) {
+      const knop = document.createElement("button");
+      knop.textContent = i;
+      knop.className = "admin-knop";
+      knop.addEventListener("click", () => {
+        db.ref("nummers/" + i).set(true);
+      });
+      adminGrid.appendChild(knop);
+    }
+
+    // Resetfunctie: zet alle nummers terug op false
+    function resetBingo() {
+      const updates = {};
+      for (let i = 1; i <= 99; i++) {
+        updates[i] = false;
+      }
+      db.ref("nummers").set(updates);
+    }
+  </script>
+</body>
+</html>
    
