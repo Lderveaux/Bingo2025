@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>AllerCoolste Stasegem Kermis Bingo</title>
-
-  <!-- ✅ CSS in aparte <style> -->
   <style>
-    body
-    {
+    body {
       font-family: sans-serif;
       text-align: center;
       background: #f9f9f9;
       margin: 0;
       padding: 0;
     }
-
     h1 {
       margin-top: 20px;
     }
-
     .grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -27,7 +22,6 @@
       margin: 20px auto;
       padding: 10px;
     }
-
     .cell {
       aspect-ratio: 1 / 1;
       display: flex;
@@ -38,21 +32,13 @@
       border-radius: 5px;
       background: #fff;
       box-sizing: border-box;
-      word-break: keep-all;
     }
-
-    .drawn {
-      background: #ff5252;
-      color: white;
-      font-weight: bold;
-    }
-
     .getrokken {
       background-color: #ffcc00;
       color: #000;
       border: 2px solid #333;
+      font-weight: bold;
     }
-
     @media (max-width: 500px) {
       .cell {
         font-size: 1em;
@@ -60,7 +46,7 @@
     }
   </style>
 
-  <!-- ✅ JavaScript in aparte <script> -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js"></script>
   <script>
@@ -77,18 +63,35 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    db.ref("nummers").on("value", (snapshot) => {
-      const nummers = snapshot.val();
-      Object.keys(nummers).forEach((nummer) => {
-        const cel = document.getElementById(`cell-${nummer}`);
-        if (cel) {
-          if (nummers[nummer]) {
-            cel.classList.add("getrokken");
-          } else {
-            cel.classList.remove("getrokken");
-          }
-        }
+    // Bouw het rooster
+    window.addEventListener("DOMContentLoaded", () => {
+      const grid = document.getElementById("bingoGrid");
+      for (let i = 1; i <= 99; i++) {
+        const vakje = document.createElement("div");
+        vakje.className = "cell vakje";
+        vakje.textContent = i;
+        vakje.id = `cell-${i}`;
+        grid.appendChild(vakje);
+      }
+
+      // Firebase listener
+      const nummersRef = db.ref("nummers");
+      nummersRef.on("value", (snapshot) => {
+        const nummers = snapshot.val() || {};
+        updateRooster(nummers);
       });
+
+      function updateRooster(nummers) {
+        const vakjes = document.querySelectorAll(".vakje");
+        vakjes.forEach((vakje) => {
+          const nummer = vakje.textContent;
+          if (nummers[nummer]) {
+            vakje.classList.add("getrokken");
+          } else {
+            vakje.classList.remove("getrokken");
+          }
+        });
+      }
     });
   </script>
 </head>
@@ -97,58 +100,5 @@
   <h1>🎪 Aller coolste Stasegem Kermis Bingo</h1>
   <p>Live getrokken nummers</p>
   <div class="grid" id="bingoGrid"></div>
-  <script>
-    async function fetchData() {
-      const sheetURL = 'https://sheet.best/api/sheets/a793c608-541e-4e77-8016-635ca2469a5d';
-      const response = await fetch(sheetURL);
-      const data = await response.json();
-
-      const grid = document.getElementById('bingoGrid');
-      grid.innerHTML = '';
-
-      for (let i = 1; i <= 99; i++) {
-        const cell = document.createElement('div');
-        cell.className = 'cell';
-        cell.id = `cell-${i}`;
-        cell.textContent = i;
-
-        const match = data.find(row => Number(row.Nummer) === i);
-        if (match && match.Getrokken === 'TRUE') {
-          cell.classList.add('drawn');
-        }
-
-        grid.appendChild(cell);
-      }
-    }
-const grid = document.getElementById('bingoGrid');
-
-// Bouw het rooster met 99 vakjes
-for (let i = 1; i <= 99; i++) {
-  const vakje = document.createElement('div');
-  vakje.className = 'cell vakje';
-  vakje.textContent = i;
-  vakje.id = `cell-${i}`;
-  grid.appendChild(vakje);
-}
-const db = firebase.database();
-const nummersRef = db.ref("nummers");
-
-nummersRef.on("value", (snapshot) => {
-  const nummers = snapshot.val() || {};
-  updateRooster(nummers);
-});
-
-function updateRooster(nummers) {
-  const vakjes = document.querySelectorAll(".vakje");
-  vakjes.forEach((vakje) => {
-    const nummer = vakje.textContent;
-    if (nummers[nummer]) {
-      vakje.classList.add("getrokken");
-    } else {
-      vakje.classList.remove("getrokken");
-    }
-  });
-}
-  </script>
 </body>
 </html>
