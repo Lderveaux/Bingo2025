@@ -59,8 +59,8 @@
   <button class="reset-knop" onclick="resetBingo()">Reset spel</button>
 
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <script>
     // 🔧 Vervang dit met jouw Firebase-configuratie
   const firebaseConfig = {
