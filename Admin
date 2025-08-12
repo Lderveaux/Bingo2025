@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Bingo Spelleider</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 8px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .admin-knop {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #e0e0e0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .admin-knop:hover {
+      background-color: #d0d0d0;
+    }
+    .reset-knop {
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff6666;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .reset-knop:hover {
+      background-color: #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+  <h1>Spelleiderpaneel Bingo</h1>
+  <p>Klik op het getrokken nummer om het te markeren bij de deelnemers.</p>
+  <div class="grid" id="adminGrid"></div>
+  <button class="reset-knop" onclick="resetBingo()">Reset spel</button>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+  <script>
+    // 🔧 Vervang dit met jouw Firebase-configuratie
+    const firebaseConfig = {
+      apiKey: "JOUW_API_KEY",
+      authDomain: "JOUW_PROJECT.firebaseapp.com",
+      databaseURL: "https://JOUW_PROJECT.firebaseio.com",
+      projectId: "JOUW_PROJECT",
+      storageBucket: "JOUW_PROJECT.appspot.com",
+      messagingSenderId: "JOUW_SENDER_ID",
+      appId: "JOUW_APP_ID"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const adminGrid = document.getElementById("adminGrid");
+
+   
