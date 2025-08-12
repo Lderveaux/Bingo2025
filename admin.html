@@ -116,7 +116,16 @@
       }
     }
   });
-
+  document.getElementById("startBingoBtn").addEventListener("click", () => {
+  db.ref("spelGestart").set(true)
+    .then(() => {
+      console.log("Spel gestart!");
+    })
+    .catch((error) => {
+      console.error("Fout bij starten van spel:", error);
+    });
+});
+<button id="startBingoBtn">Start Bingo</button>
   function resetBingo() {
     const updates = {};
     for (let i = 1; i <= 99; i++) {
@@ -127,8 +136,5 @@
 </script>
 </script>
 </body>
-  <button onclick="db.ref('spelGestart').set(true)">
-  Start Bingo
-</button>
 </html>
    
