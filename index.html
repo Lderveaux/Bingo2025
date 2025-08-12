@@ -131,6 +131,16 @@ grid.appendChild(vakje);
         });
       }
     });
+     const db = firebase.database();
+
+  db.ref("spelGestart").on("value", (snapshot) => {
+    const gestart = snapshot.val();
+    if (gestart) {
+      document.getElementById("overlay").style.display = "none";
+    } else {
+      document.getElementById("overlay").style.display = "flex";
+    }
+  });
   </script>
 </head>
 <body>
