@@ -62,7 +62,7 @@
   authDomain: "bingolive-2b326.firebaseapp.com",
   databaseURL: "https://bingolive-2b326-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "bingolive-2b326",
-  storageBucket: "bingolive-2b326.firebasestorage.app",
+  storageBucket: "bingolive-2b326.appspot.com",
   messagingSenderId: "269555410215",
   appId: "1:269555410215:web:c7fba454ebd510f1c2b502",
   measurementId: "G-GFSYKPWQ7M"
