@@ -55,14 +55,16 @@
         font-size: 1em;
       }
     }
-    #overlay {
+#overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  backdrop-filter: blur(6px);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-image: url('JE_AFBEELDINGSHIER'); /* vervang met jouw afbeelding */
+  background-size: cover;
+  background-position: center;
+  backdrop-filter: blur(2px);
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -70,14 +72,38 @@
   color: white;
   text-align: center;
   padding: 20px;
+  animation: fadeIn 1s ease;
 }
 
 .overlay-content {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(0, 0, 0, 0.6);
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-  animation: fadeIn 1s ease;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  animation: pulse 2s infinite;
+}
+
+.overlay-content h2 {
+  font-size: 2em;
+  color: #ffe066;
+  text-shadow: 0 0 10px #ffcc00;
+}
+
+.magic {
+  color: #ff6ec7;
+  text-shadow: 0 0 15px #ff6ec7;
+  font-weight: bold;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
   </style>
 
