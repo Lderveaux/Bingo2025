@@ -111,8 +111,10 @@
     overlay.style.display = "flex";
   } else {
     overlay.style.display = "none";
+    const geenNummersGetrokken = !nummers || Object.keys(nummers).length === 0 || Object.values(nummers).every(v => v === false);
   }
 }
+  
 
   window.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById("bingoGrid");
