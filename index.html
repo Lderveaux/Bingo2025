@@ -112,26 +112,39 @@
       grid.appendChild(vakje);
     }
 
-    // Luister naar spelGestart
-    db.ref("spelGestart").on("value", (snapshot) => {
-      const gestart = snapshot.val();
-      const overlay = document.getElementById("overlay");
-      overlay.style.display = gestart ? "none" : "flex";
-    });
+   let spelGestart = false;
+let nummers = {};
 
-    // Luister naar getrokken nummers
-    db.ref("nummers").on("value", (snapshot) => {
-      const nummers = snapshot.val() || {};
-      const vakjes = document.querySelectorAll(".vakje");
-      vakjes.forEach((vakje) => {
-        const nummer = vakje.dataset.id;
-        if (nummers[nummer]) {
-          vakje.classList.add("getrokken");
-        } else {
-          vakje.classList.remove("getrokken");
-        }
-      });
-    });
+function updateOverlay() {
+  const overlay = document.getElementById("overlay");
+  const minstensEénGetrokken = Object.values(nummers).some(v => v === true);
+
+  if (spelGestart || minstensEénGetrokken) {
+    overlay.style.display = "none";
+  } else {
+    overlay.style.display = "flex";
+  }
+}
+
+// 🔁 Luister naar spelGestart
+db.ref("spelGestart").on("value", (snapshot) => {
+  spelGestart = snapshot.val();
+  updateOverlay();
+});
+
+// 🔁 Luister naar nummers
+db.ref("nummers").on("value", (snapshot) => {
+  nummers = snapshot.val() || {};
+  updateOverlay();
+
+  const vakjes = document.querySelectorAll(".vakje");
+  vakjes.forEach((vakje) => {
+    const nummer = vakje.dataset.id;
+    if (nummers[nummer]) {
+      vakje.classList.add("getrokken");
+    } else {
+      vakje.classList.remove("getrokken");
+    }
   });
 </script>
 </head>
