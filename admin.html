@@ -70,6 +70,7 @@
   <h1>Spelleiderpaneel Bingo</h1>
   <p>Klik op het getrokken nummer om het te markeren bij de deelnemers.</p>
   <div class="grid" id="adminGrid"></div>
+  <button id="startBingoBtn">Start Bingo</button>
   <button class="reset-knop" onclick="resetBingo()">Reset spel</button>
 
   <!-- Firebase SDK -->
@@ -125,7 +126,6 @@
       console.error("Fout bij starten van spel:", error);
     });
 });
-<button id="startBingoBtn">Start Bingo</button>
   function resetBingo() {
     const updates = {};
     for (let i = 1; i <= 99; i++) {
