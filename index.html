@@ -111,7 +111,18 @@ vakje.id = `cell-${i}`;
 vakje.textContent = nummer; // ← Voeg het nummer toe als tekst
 grid.appendChild(vakje);
       }
+<script>
+  const db = firebase.database();
 
+  db.ref("spelGestart").on("value", (snapshot) => {
+    const gestart = snapshot.val();
+    const overlay = document.getElementById("overlay");
+    if (gestart) {
+      overlay.style.display = "none";
+    } else {
+      overlay.style.display = "flex";
+    }
+  });
       // Firebase listener
       const nummersRef = db.ref("nummers");
       nummersRef.on("value", (snapshot) => {
