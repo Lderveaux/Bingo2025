@@ -84,75 +84,56 @@
 <!-- Firebase compat SDK’s -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-  apiKey: "AIzaSyAX3RaXLAOb3i9uCS8wqbJNvhzpTlASaWI",
-  authDomain: "bingolive-2b326.firebaseapp.com",
-  databaseURL: "https://bingolive-2b326-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "bingolive-2b326",
-  storageBucket: "bingolive-2b326.appspot.com",
-  messagingSenderId: "269555410215",
-  appId: "1:269555410215:web:c7fba454ebd510f1c2b502",
-  measurementId: "G-GFSYKPWQ7M"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // Bouw het rooster
-    window.addEventListener("DOMContentLoaded", () => {
-      const grid = document.getElementById("bingoGrid");
-      for (let i = 1; i <= 99; i++) {
-        const vakje = document.createElement("div");
-        vakje.className = "cell vakje";
-        vakje.dataset.id = i;
-        const nummer = vakje.dataset.id;
-vakje.id = `cell-${i}`;
-vakje.textContent = nummer; // ← Voeg het nummer toe als tekst
-grid.appendChild(vakje);
-      }
 <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAX3RaXLAOb3i9uCS8wqbJNvhzpTlASaWI",
+    authDomain: "bingolive-2b326.firebaseapp.com",
+    databaseURL: "https://bingolive-2b326-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "bingolive-2b326",
+    storageBucket: "bingolive-2b326.appspot.com",
+    messagingSenderId: "269555410215",
+    appId: "1:269555410215:web:c7fba454ebd510f1c2b502",
+    measurementId: "G-GFSYKPWQ7M"
+  };
+
+  firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
-  db.ref("spelGestart").on("value", (snapshot) => {
-    const gestart = snapshot.val();
-    const overlay = document.getElementById("overlay");
-    if (gestart) {
-      overlay.style.display = "none";
-    } else {
-      overlay.style.display = "flex";
-    }
-  });
-      // Firebase listener
-      const nummersRef = db.ref("nummers");
-      nummersRef.on("value", (snapshot) => {
-        const nummers = snapshot.val() || {};
-        updateRooster(nummers);
-      });
+  window.addEventListener("DOMContentLoaded", () => {
+    const grid = document.getElementById("bingoGrid");
 
-      function updateRooster(nummers) {
-        const vakjes = document.querySelectorAll(".vakje");
-        vakjes.forEach((vakje) => {
-          const nummer = vakje.dataset.id;
-          if (nummers[nummer]) {
-            vakje.classList.add("getrokken");
-          } else {
-            vakje.classList.remove("getrokken");
-          }
-        });
-      }
+    // Bouw rooster
+    for (let i = 1; i <= 99; i++) {
+      const vakje = document.createElement("div");
+      vakje.className = "cell vakje";
+      vakje.dataset.id = i;
+      vakje.id = `cell-${i}`;
+      vakje.textContent = i;
+      grid.appendChild(vakje);
+    }
+
+    // Luister naar spelGestart
+    db.ref("spelGestart").on("value", (snapshot) => {
+      const gestart = snapshot.val();
+      const overlay = document.getElementById("overlay");
+      overlay.style.display = gestart ? "none" : "flex";
     });
-     const db = firebase.database();
 
-  db.ref("spelGestart").on("value", (snapshot) => {
-    const gestart = snapshot.val();
-    if (gestart) {
-      document.getElementById("overlay").style.display = "none";
-    } else {
-      document.getElementById("overlay").style.display = "flex";
-    }
+    // Luister naar getrokken nummers
+    db.ref("nummers").on("value", (snapshot) => {
+      const nummers = snapshot.val() || {};
+      const vakjes = document.querySelectorAll(".vakje");
+      vakjes.forEach((vakje) => {
+        const nummer = vakje.dataset.id;
+        if (nummers[nummer]) {
+          vakje.classList.add("getrokken");
+        } else {
+          vakje.classList.remove("getrokken");
+        }
+      });
+    });
   });
-  </script>
+</script>
 </head>
 <body>
   <div id="overlay">
