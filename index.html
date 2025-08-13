@@ -103,15 +103,16 @@
   let nummers = {};
 
   function updateOverlay() {
-    const overlay = document.getElementById("overlay");
-    const minstensEénGetrokken = Object.values(nummers).some(v => v === true);
+  const overlay = document.getElementById("overlay");
 
-    if (spelGestart || minstensEénGetrokken) {
-      overlay.style.display = "none";
-    } else {
-      overlay.style.display = "flex";
-    }
+  const geenNummersGetrokken = !nummers || Object.values(nummers).every(v => v === false);
+
+  if (!spelGestart && geenNummersGetrokken) {
+    overlay.style.display = "flex";
+  } else {
+    overlay.style.display = "none";
   }
+}
 
   window.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById("bingoGrid");
