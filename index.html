@@ -152,14 +152,11 @@
 
   function updateOverlay() {
   const overlay = document.getElementById("overlay");
-
   const geenNummersGetrokken = !nummers || Object.values(nummers).every(v => v === false);
-
   if (!spelGestart && geenNummersGetrokken) {
     overlay.style.display = "flex";
   } else {
     overlay.style.display = "none";
-    const geenNummersGetrokken = !nummers || Object.keys(nummers).length === 0 || Object.values(nummers).every(v => v === false);
   }
 }
   
