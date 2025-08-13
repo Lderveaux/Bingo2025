@@ -99,6 +99,20 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 
+  let spelGestart = false;
+  let nummers = {};
+
+  function updateOverlay() {
+    const overlay = document.getElementById("overlay");
+    const minstensEénGetrokken = Object.values(nummers).some(v => v === true);
+
+    if (spelGestart || minstensEénGetrokken) {
+      overlay.style.display = "none";
+    } else {
+      overlay.style.display = "flex";
+    }
+  }
+
   window.addEventListener("DOMContentLoaded", () => {
     const grid = document.getElementById("bingoGrid");
 
@@ -112,42 +126,29 @@
       grid.appendChild(vakje);
     }
 
-   let spelGestart = false;
-let nummers = {};
+    // Luister naar spelGestart
+    db.ref("spelGestart").on("value", (snapshot) => {
+      spelGestart = snapshot.val();
+      updateOverlay();
+    });
 
-function updateOverlay() {
-  const overlay = document.getElementById("overlay");
-  const minstensEénGetrokken = Object.values(nummers).some(v => v === true);
+    // Luister naar nummers
+    db.ref("nummers").on("value", (snapshot) => {
+      nummers = snapshot.val() || {};
+      updateOverlay();
 
-  if (spelGestart || minstensEénGetrokken) {
-    overlay.style.display = "none";
-  } else {
-    overlay.style.display = "flex";
-  }
-}
-
-// 🔁 Luister naar spelGestart
-db.ref("spelGestart").on("value", (snapshot) => {
-  spelGestart = snapshot.val();
-  updateOverlay();
-});
-
-// 🔁 Luister naar nummers
-db.ref("nummers").on("value", (snapshot) => {
-  nummers = snapshot.val() || {};
-  updateOverlay();
-
-  const vakjes = document.querySelectorAll(".vakje");
-  vakjes.forEach((vakje) => {
-    const nummer = vakje.dataset.id;
-    if (nummers[nummer]) {
-      vakje.classList.add("getrokken");
-    } else {
-      vakje.classList.remove("getrokken");
-    }
+      const vakjes = document.querySelectorAll(".vakje");
+      vakjes.forEach((vakje) => {
+        const nummer = vakje.dataset.id;
+        if (nummers[nummer]) {
+          vakje.classList.add("getrokken");
+        } else {
+          vakje.classList.remove("getrokken");
+        }
+      });
+    });
   });
 </script>
-</head>
 <body>
   <div id="overlay">
   <div class="overlay-content">
