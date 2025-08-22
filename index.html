@@ -53,7 +53,6 @@
     }
 
     #overlay {
-      display: block;
       position: fixed;
       top: 0;
       left: 0;
@@ -151,18 +150,21 @@
 
     function updateOverlay() {
       const overlay = document.getElementById("overlay");
+      const bingoContainer = document.getElementById("bingoContainer");
       const geenNummersGetrokken = !nummers || Object.values(nummers).every(v => v === false);
+
       if (!spelGestart && geenNummersGetrokken) {
         overlay.style.display = "flex";
+        bingoContainer.style.display = "none";
       } else {
         overlay.style.display = "none";
+        bingoContainer.style.display = "block";
       }
     }
 
     window.addEventListener("DOMContentLoaded", () => {
       const grid = document.getElementById("bingoGrid");
 
-      // Bouw rooster
       for (let i = 1; i <= 99; i++) {
         const vakje = document.createElement("div");
         vakje.className = "cell vakje";
@@ -172,13 +174,11 @@
         grid.appendChild(vakje);
       }
 
-      // Luister naar spelGestart
       db.ref("spelGestart").on("value", (snapshot) => {
         spelGestart = snapshot.val();
         updateOverlay();
       });
 
-      // Luister naar nummers
       db.ref("nummers").on("value", (snapshot) => {
         nummers = snapshot.val() || {};
         updateOverlay();
@@ -203,9 +203,11 @@
     </div>
   </div>
 
-  <img src="https://i.imgur.com/Puy8ufy.jpeg" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-  <h1>🎪 Aller coolste Stasegem Kermis Bingo</h1>
-  <p>Live getrokken nummers</p>
-  <div class="grid" id="bingoGrid"></div>
+  <div id="bingoContainer" style="display: none;">
+    <img src="https://i.imgur.com/Puy8ufy.jpeg" style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
+    <h1>🎪 Aller coolste Stasegem Kermis Bingo</h1>
+    <p>Live getrokken nummers</p>
+    <div class="grid" id="bingoGrid"></div>
+  </div>
 </body>
 </html>
