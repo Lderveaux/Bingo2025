@@ -68,9 +68,12 @@
       justify-content: center;
       padding: 20px;
       animation: fadeIn 1s ease;
+      overflow: hidden;
     }
 
     .overlay-content {
+      position: relative;
+      z-index: 2;
       background-color: rgba(0, 0, 0, 0.6);
       padding: 40px;
       border-radius: 12px;
@@ -93,6 +96,50 @@
       font-weight: bold;
     }
 
+    /* Falling bingo balls */
+    #ballLayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .ball {
+      position: absolute;
+      top: -60px;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.95em;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+      box-shadow:
+        inset -4px -4px 8px rgba(0,0,0,0.25),
+        inset 3px 3px 6px rgba(255,255,255,0.5),
+        0 4px 6px rgba(0,0,0,0.3);
+      animation-name: fall, spin;
+      animation-timing-function: linear, linear;
+      animation-iteration-count: infinite, infinite;
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(-10vh); }
+      100% { transform: translateY(115vh); }
+    }
+
+    @keyframes spin {
+      0%   { rotate: 0deg; }
+      100% { rotate: 360deg; }
+    }
+
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
@@ -102,6 +149,13 @@
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ball {
+        animation: none;
+        display: none;
+      }
     }
 
     @media (max-width: 600px) {
@@ -123,6 +177,12 @@
 
       .magic {
         font-size: 1.5em;
+      }
+
+      .ball {
+        width: 34px;
+        height: 34px;
+        font-size: 0.75em;
       }
     }
   </style>
@@ -162,6 +222,32 @@
       }
     }
 
+    // Classic bingo ball colours (B-I-N-G-O style palette)
+    const BAL_KLEUREN = ["#e53935", "#1e88e5", "#43a047", "#fdd835", "#8e24aa", "#fb8c00"];
+
+    function maakVallendeBallen(aantal = 18) {
+      const laag = document.getElementById("ballLayer");
+      if (!laag || laag.dataset.gevuld) return;
+      laag.dataset.gevuld = "true";
+
+      for (let i = 0; i < aantal; i++) {
+        const bal = document.createElement("div");
+        bal.className = "ball";
+        bal.textContent = Math.floor(Math.random() * 90) + 1;
+        bal.style.left = Math.random() * 96 + "%";
+        bal.style.background = BAL_KLEUREN[i % BAL_KLEUREN.length];
+
+        const duur = 6 + Math.random() * 6; // 6s - 12s to fall
+        const vertraging = Math.random() * 10; // stagger start
+        const spinDuur = 2 + Math.random() * 3;
+
+        bal.style.animationDuration = `${duur}s, ${spinDuur}s`;
+        bal.style.animationDelay = `${vertraging}s, 0s`;
+
+        laag.appendChild(bal);
+      }
+    }
+
     window.addEventListener("DOMContentLoaded", () => {
       const grid = document.getElementById("bingoGrid");
 
@@ -173,6 +259,8 @@
         vakje.textContent = i;
         grid.appendChild(vakje);
       }
+
+      maakVallendeBallen();
 
       db.ref("spelGestart").on("value", (snapshot) => {
         spelGestart = snapshot.val();
@@ -198,6 +286,7 @@
 </head>
 <body>
   <div id="overlay">
+    <div id="ballLayer"></div>
     <div class="overlay-content">
       <h2>Smul gerust maar net als wij van de heerlijke mosseltjes want straks is het Bingotijd!!</h2>
     </div>
