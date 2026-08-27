@@ -126,10 +126,6 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://i.imgur.com/4ca4EFj.jpeg');
-      background-size: cover;
-      background-position: center;
-      backdrop-filter: blur(2px);
       z-index: 9999;
       display: flex;
       align-items: center;
@@ -137,6 +133,35 @@
       padding: 20px;
       animation: fadeIn 1s ease;
       overflow: hidden;
+    }
+
+    #overlay::before {
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      right: -20px;
+      bottom: -20px;
+      background-image: url('https://i.imgur.com/4ca4EFj.jpeg');
+      background-size: cover;
+      background-position: center;
+      filter: blur(18px) brightness(0.7);
+      transform: scale(1.1);
+      z-index: 0;
+    }
+
+    #overlay::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url('https://i.imgur.com/4ca4EFj.jpeg');
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      z-index: 0;
     }
 
     .overlay-content {
